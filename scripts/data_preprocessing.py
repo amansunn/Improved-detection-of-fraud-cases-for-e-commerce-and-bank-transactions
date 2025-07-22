@@ -23,12 +23,16 @@ fraud_data = fraud_data.drop_duplicates()
 fraud_data['signup_time'] = pd.to_datetime(fraud_data['signup_time'])
 fraud_data['purchase_time'] = pd.to_datetime(fraud_data['purchase_time'])
 
-# EDA: Univariate analysis (example)
-print(fraud_data.describe())
-print(fraud_data['is_fraud'].value_counts())
 
-# EDA: Bivariate analysis (example)
-print(fraud_data.groupby('is_fraud').mean())
+# EDA: Univariate analysis (example)
+print(f"Columns in fraud_data: {fraud_data.columns.tolist()}")
+print(fraud_data.describe())
+if 'class' in fraud_data.columns:
+    print(fraud_data['class'].value_counts())
+    # EDA: Bivariate analysis (example)
+    print(fraud_data.groupby('class').mean())
+else:
+    print("Column 'class' not found. Please check your CSV file for the correct column name.")
 
 # Convert IP addresses to integer format for merging
 import ipaddress
@@ -61,10 +65,11 @@ fraud_data['hour_of_day'] = fraud_data['purchase_time'].dt.hour
 fraud_data['day_of_week'] = fraud_data['purchase_time'].dt.dayofweek
 fraud_data['time_since_signup'] = (fraud_data['purchase_time'] - fraud_data['signup_time']).dt.total_seconds()
 
+
 # Data Transformation
 # Handle class imbalance
-X = fraud_data.drop(['is_fraud'], axis=1)
-y = fraud_data['is_fraud']
+X = fraud_data.drop(['class'], axis=1)
+y = fraud_data['class']
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=0.2, random_state=42)
 
 # Analyze class distribution
