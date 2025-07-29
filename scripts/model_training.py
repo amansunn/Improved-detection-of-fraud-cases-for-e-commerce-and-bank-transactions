@@ -43,3 +43,9 @@ print(classification_report(y_test, y_pred_rf))
 # Model selection justification
 print("\n--- Model Selection Justification ---")
 print("Compare F1-Score and AUC-PR. Random Forest is expected to perform better on imbalanced data due to its ensemble nature, but Logistic Regression offers interpretability. Choose the model with the best balance of performance and interpretability for your use case.")
+
+import joblib
+
+# Save the trained Random Forest model
+joblib.dump(rf, 'rf_model.pkl')
+print("Random Forest model saved as rf_model.pkl")
